@@ -52,7 +52,7 @@ source = ColumnDataSource(dict(     #instantiates data for lines on the plot
 
 ))
 
-hover = HoverTool(tooltips=[('Department: ', '@department'), ('For ', '@depid')])
+hover = HoverTool(tooltips=[('Department ', '@department'), ('For ', '@depid'), ('Amount ', '$y{($ 0.00 a)'}])
 p = figure(
     title = "Philadelphia City Budget 2016-2019",
     tools=[hover, BoxZoomTool(), ResetTool(), PanTool()])

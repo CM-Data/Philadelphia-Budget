@@ -48,11 +48,12 @@ source = ColumnDataSource(dict(     #instantiates data for lines on the plot
     x=[[2016, 2017, 2018, 2019]]*len(full.columns),
     y=yvals,
     department = full.iloc[2],
-    depid = full.iloc[3]
+    depid = full.iloc[3],
+    fund = full.iloc[1]
 
 ))
 
-hover = HoverTool(tooltips=[('Department ', '@department'), ('For ', '@depid'), ('Amount ', '$y{($ 0.00 a)'}])
+hover = HoverTool(tooltips=[('Department ', '@department'), ('For ', '@depid'), ('Amount ', '$y{($ 0.00 a)}'), ('Fund ','@fund')])
 p = figure(
     title = "Philadelphia City Budget 2016-2019",
     tools=[hover, BoxZoomTool(), ResetTool(), PanTool()])
@@ -93,7 +94,7 @@ def update(attr, old, new):
                 temp.append(val)
         yvals.append(temp)
         temp = []
-    new_dataml = dict(x=[[2016, 2017, 2018, 2019]]*len(full.columns), y=yvals, department = full.iloc[2], depid = full.iloc[3])
+    new_dataml = dict(x=[[2016, 2017, 2018, 2019]]*len(full.columns), y=yvals, department = full.iloc[2], depid = full.iloc[3], fund = full.iloc[1])
     new_datac = dict(x = [2016, 2017, 2018, 2019]*(int(len(circleyvals)/4)),
     y = circleyvals)
     source.data = new_dataml

@@ -11,7 +11,7 @@ from bokeh.models.tickers import FixedTicker
 full = pd.read_csv('b16to19.csv')
 
 
-full.fillna(value=0, inplace=True)  #Turns NaN data into entries of zero
+full.fillna(value=0, inplace=True)  #Turns NaN data into entries of zero for plot functionality
 full.set_index(['total2016', 'total2017', 'total2018', 'total'])
 full['depid'] =full['class_id'].map(str)+ full['department']
 full= full.T   #Flips columns and rows in dataframe
@@ -42,7 +42,7 @@ for valu in entriescounter:
         temp = []
 circlesource = ColumnDataSource(dict(   #instanstiates data for dots on the plot
     x = [2016, 2017, 2018, 2019]*(int(len(circleyvals)/4)),
-    y = circleyvals,
+    y = circleyvals
 ))
 source = ColumnDataSource(dict(     #instantiates data for lines on the plot
     x=[[2016, 2017, 2018, 2019]]*len(full.columns),
@@ -53,7 +53,7 @@ source = ColumnDataSource(dict(     #instantiates data for lines on the plot
 
 ))
 
-hover = HoverTool(tooltips=[('Department ', '@department'), ('For ', '@depid'), ('Amount ', '$y{($ 0.00 a)}'), ('Fund ','@fund')])
+hover = HoverTool(tooltips=[('Department: ', '@department'), ('For ', '@depid'), ('Amount', '$y{($ 0.00 a)}'), ('Fund ','@fund')])
 p = figure(
     title = "Philadelphia City Budget 2016-2019",
     tools=[hover, BoxZoomTool(), ResetTool(), PanTool()])
@@ -64,6 +64,8 @@ for dep in list(full.iloc[2].unique()):
     dep = dep, dep
     deplist.append(tuple(dep))
 
+
+
 p.circle(x='x', y='y',   #creates dotted plot
          size=7,
          source=circlesource)
@@ -72,8 +74,8 @@ p.multi_line(xs='x', ys='y', source=source)   #creates line plot
 p.yaxis[0].formatter = NumeralTickFormatter(format="$0.00 a")    #formats y and x axes
 p.xaxis[0].formatter = NumeralTickFormatter(format= "00")
 p.xaxis.ticker = FixedTicker(ticks=[2016, 2017, 2018, 2019])
-menu = deplist
-dropdown = Dropdown(label="Department", button_type="warning", menu=menu)
+menu = sorted(deplist) #Alphabetizes Department list
+dropdown = Dropdown(label="Department", button_type="warning", width=425, menu=menu)
 
 def update(attr, old, new):
     depo = dropdown.value
